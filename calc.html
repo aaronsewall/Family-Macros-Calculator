@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>Family Macros Calculator</title>
+<meta name="keywords" content="Macros, KetoGains, FILL IN" />
+<meta name="description" content="Family Daily Macros Calculator Description" />
+<link rel='stylesheet' href='calc.css' type='text/css' />
+<script src="calc.js"></script>
+</head>
+<!--<body onload="document.calculator.flname.focus();">-->
+<h1>Macros and Calories</h1>
+<form name='calculator' onSubmit="return formValidation();">
+
+<h2>Your Stats</h2>
+<p><label for="flname">Name:</label>
+<input type="text" name="flname" size="6" /></p>
+<p><label for="weightlbs">Weight (lbs): </label>
+<input type="number" name="weightlbs" size="6" /></p>
+<!--<p><label for="weightkg">Weight (lbs):</label></p>
+<p><input type="number" name="weightkg" size="6" /></p>-->
+<p><label id="gender">Gender: </label>
+<input type="radio" name="msex" value="Male" />Male
+<input type="radio" name="fsex" value="Female" />Female</p>
+<p><label for="bodyfat">% Bodyfat: </label>
+<input type="number" name="bodyfat" size="6" /></p>
+<p><label for="age">Age :</label>
+<input type="number" name="age" size="6" />
+<p><label for="height">Height: (in)</label>
+<input type="number" name="height" size="6" /></p>
+<p><label for="desiredbf">Desired Bodyfat %: </label>
+<input type="number" name="desiredbf"/></p>
+<p>BMI: </p><div id="bmi"></div>
+<p>BMI Classification: </p><div id="bmiclass"></div>
+<h2>Lean Weight</h2>
+<p>Net lbs: </p><div id="leanlbs"></div>
+<p>Net kg: </p><div id="leankg"></div>
+<p>BMR (Basal Metabolic Rate): </p><div id="bmr"></div>
+<p>TEF (Thermic Effect of Food): </p><div id="tef"></div>
+<p>BMR + TEF: </p><div id="bmrtef"></div>
+<p><label for="activitylevel">Activity Level</label></p>
+<p>Choose your activity level - Description of your activity (THIS DOES NOT INCLUDE EXERCISE) </p>
+<p><input type="radio" name="activitylevel" value="sedentary" checked>Sedentary - Typical desk job / Sitting most of the day</p>
+<p><input type="radio" name="activitylevel" value="lightlyactive">Lightly Active - Walking around a good amount, retail jobs</p>
+<p><input type="radio" name="activitylevel" value="moderatelyactive">Moderately Active - Walking constantly in a fast paced environment, waiting tables</p>
+<p><input type="radio" name="activitylevel" value="veryactive">Very Active - Very labor intensive, construction workers</p>
+</select></p>
+<p>TDEE (Total Daily Energy Expenditure): </p><div id="tdee"></div>
+
+<p>Exercise Info</p>
+<p>Activity</p>
+<p></p>
+<p>Strength Training</p>
+<p>Cardio</p>
+<p>Other</p>
+<p></p>
+<p>Minutes</p>
+<p>Calories Burnt per Minute -- 0.1*weightkg (strength)</p>
+<p>Total Burnt Calories</p>
+<p>Maintinence with exercise</p>
+<p></p>
+<p>Calorie Deficit % -0 -25 start at 10 or 15</p>
+<p>Calorie Surplus % +0 +15 start at maintinence</p>
+<p></p>
+<p>Calories without Exercise</p>
+<p>Lose fat -- tdee - (tdee*deficit)</p>
+<p>Maintain Weight -- tdee</p>
+<p></p>
+<p>Calories with Exercise --- </p>
+<p>Lose fat - (tdee + ex_cal) * ((tdee+ex_cal)*deficit)</p>
+<p>Maintain Weight - (tdee + ex_cal) </p>
+<p>Gain weight -- (tdee + ex_cal) + ((tdee+ex_cal)*surplus)</p>
+<p></p>
+<p>Macronutrients</p>
+<p></p>
+<p>Macro Grams</p>
+<p></p>
+<p>Protein Ratio</p>
+<p>1.2, 0.69, 0.8, 1.0, *leanlbs</p>
+<p>.69 minimum to 0.8 to maintain muscle w/o exercise</p>
+<p>otherwise 0.8-1.2 w/ exercise</p>
+<p>KG_suggested? weightkg/1.8</p>
+<p></p>
+<p>daily calories</p>
+<p>proteincal = proteinmacro*proteinratio*4;</p>
+<p>carbcal = 30*4;</p>
+<p>fatcal = 9*fatmacro</p>
+<p></p>
+<p>Carbs under 30g</p>
+<p>carbmacro = 30;</p>
+<p></p>
+<p>Fat </p>
+<p>fatmacro = (tdee+ex_cal - proteincal - carbcal)/9;</p>
+<p></p>
+<p>calorie percentages</p>
+<p></p>
+<p></p>
+<p>I want to build huge muscles. How much muscle can I build within A YEAR?	</p>
+<table>
+<tr>
+<th>Years of Proper Training</th>
+<th>Potential Rate of Muscle Gain PER YEAR</th>
+</tr>
+<tr><td>1</td><td>20-25 pounds (2 pounds per montd)</td></tr>
+<tr><td>2</td><td>10-6 pounds (1 pound per montd)</td></tr>
+<tr><td>3</td><td>5-6 pounds (0.5 pound per montd)</td></tr>
+<tr><td>4+</td><td>2-3 pounds (not wortd calculating)</td></tr>
+</table>
+<p>I want to lose fat. How much can I safely lose PER WEEK as to minimize muscle loss?	</p>
+<table>
+<tr><th>Body Fat %</th><th>	Fat Loss PER WEEK</th></tr>
+<tr><td>18-19%</td><td>	-1.7 lb/week</td></tr>
+<tr><td>15-17%</td><td>	-1.5 lb/week</td></tr>
+<tr><td>6-14%</td><td>	-1.3 lb/week</td></tr>
+<tr><td>09-11%</td><td>	-1.0 lb/week</td></tr>
+<tr><td>&lt;8% </td><td> -0.7lb/week</td></tr>
+</table>
+
+<p>Noob gains chart - insert image</p>
+<p>Progress x Time</p>
+<p>8-20 weeks</p>
+<p>Strength</p>
+<p>Muscle Growth</p>
+<p>Neural Changes</p>
+
+
+
+<h1>Tracking and Measurments</h1>
+<h2>Caliper Measurements</h2>
+<p>In mm</p>
+<p><label for="chest_caliper">Chest: </label>
+<input type="number" name="chest_caliper" size="6" /></p>
+<p><label for="abs_caliper">Abdominal: </label>
+<input type="number" name="abs_caliper" size="6" /></p>
+<p><label for="thigh_caliper">Thigh: </label>
+<input type="number" name="thigh_caliper" size="6" /></p>
+<p><label for="biceps_caliper">Bicep: </label>
+<input type="number" name="biceps_caliper" size="6" /></p>
+<p><label for="triceps_caliper">Tricep: </label>
+<input type="number" name="triceps_caliper" size="6" /></p>
+<p><label for="subscapula_caliper">Subscapula: </label>
+<input type="number" name="subscapula_caliper" size="6" /></p>
+<p><label for="suprailiac_caliper">Suprailiac: </label>
+<input type="number" name="suprailiac_caliper" size="6" /></p>
+<p><label for="lower_back_caliper">Lower Back: </label>
+<input type="number" name="lower_back_caliper" size="6" /></p>
+<p><label for="midaxilla_caliper">Midaxillia: </label>
+<input type="number" name="midaxilla_caliper" size="6" /></p>
+<p><label for="quadriceps_caliper">Quadriceps: </label>
+<input type="number" name="quadriceps_caliper" size="6" /></p>
+<p><label for="calves_caliper">Calves: </label>
+<input type="number" name="calves_caliper" size="6" /></p>
+
+Body Fat %
+
+<p>Jackson Pollock 7: </p><div id="jackson_pollock_7"></div>
+<p>Jackson Pollock 3: </p><div id="jackson_pollock_3"></div>
+<p>Jackson Pollock 4: </p><div id="jackson_pollock_4"></div>
+<p>Parillo: </p><div id="parillo"></div>
+<p>Durnin Womersley: </p><div id="durnin_womersley"></div>
+<p>Navy Bf: </p><div id="navy_bf"></div>
+<p>Lyle's BMI Estimate: </p><div id="lyle_est"></div>
+<p>Avgerage: </p><div id="bf_avg"></div>
+<p>Median: </p><div id="median"></div>
+
+
+
+
+Fat Free Mass Index
+Adjusted FFMI
+
+FFMI = (fat-free mass in kg) / (height in meters)^2
+Adjusted FFMI = FFMI - (6.3 x (1.8 - height in meters))
+
+
+
+<h2>Tape Measurements</h2>
+<p>inches or cm??</p>
+<p><label id="flexed">Flexed?</label>
+<input type="radio" name="fyes" value="true" />Yes
+<input type="radio" name="fno" value="false" />No</p>
+<p><label for="neck">Neck: </label>
+<input type="number" name="neck" size="6"/></p>
+<p><label for="chest">Chest: </label>
+<input type="number" name="chest" size="6"/></p>
+<p><label for="shoulder">Shoulder: </label>
+<input type="number" name="shoulder" size="6"/></p>
+<p><label for="arms">Arms: </label>
+<input type="number" name="arms" size="6"/></p>
+<p><label for="forearms">Forearms: </label>
+<input type="number" name="forearms" size="6"/></p>
+<p><label for="hip">Hip: </label>
+<input type="number" name="hip" size="6"/></p>
+<p><label for="waist">Waist: </label>
+<input type="number" name="waist" size="6"/></p>
+<p><label for="thigh">Thighs: </label>
+<input type="number" name="thigh" size="6"/></p>
+<p><label for="calves">Calves: </label>
+<input type="number" name="calves" size="6"/></p>
+<p><label for="wrist">Wrist: </label>
+<input type="number" name="wrist" size="6"/> the circumferen the bony lump on the wrist. The hand should be relaxed.</p>
+<p><label for="ankle">Ankle: </label>
+<input type="number" name="ankle" size="6"/> the circumference of your ankle at the smallest point between the calf muscle and the ankle.</p>
+
+
+<h2>Pictures</h2>
+Front: <input type='file' />
+<img id="frontimg" src="#" alt="Front image" />
+Left Side: <input type='file' />
+<img id="leftimg" src="#" alt="Left Side image" />
+Right Side: <input type='file' />
+<img id="rightimg" src="#" alt="Right Side image" />
+Back: <input type='file' />
+<img id="backimg" src="#" alt="Back image" />
+
+
+<h2>Body Fat</h2>
+
+<h2>6 Week Recomp</h2>
+TDEE
+Calories from Exercise
+Week 1....Week 6
+% Deficit
+% Surplus
+
+Weekly Calories = TDEE*7
+Lift Day = tdee - (tdee*surplus/deficit) + ex_cal
+Rest Day = tdee - (tdee*surplus/deficit) - ex_cal
+Lift Day
+Rest Day
+Lift Day
+Rest Day
+Rest Day
+
+Cut -1  -25%
+Bulk +1% 15%
+Maintain 0%
+
+Lift Day Macros
+Protein
+Carbs
+Fat
+Lift Day kcals
+
+Rest Day Macros
+Protein
+Carbs
+Fat
+Rest Day kcals
+
+
+
+<h2>Exercise Routines</h2>
+<h3>Ketogains Novice Program (Based on ICT 5x5 (Ice Cream Fitness))</h3>
+Week One	Week Two
+Day 1 - Workout A	Day 1 - Workout B
+Day 2 - Rest	Day 2 - Rest
+Day 3 - Workout B	Day 3 - Workout A
+Day 4 - Rest	Day 4 - Rest
+Day 5 - Workout A	Day 5 - Workout B
+Days 6 & 7 - Rest	Days 6 & 7 - Rest
+
+
+Workout A/B				
+Exercise	Equipment	Muscle	Sets	Reps
+Barbell Squats	Barbell	Legs	5	5
+Barbell Bench Press/Barbell Deadlift	Barbell	Chest/Back	5/1	5
+Bent Over Row/10% lighter	Barbell	Back	5	5
+Dumbbell Shrugs/Standing Overhead Shoulder Press	Barbell	Traps/Shoulders	3/5	8/5
+Triceps Extensions With Rope/Close Grip Bench Press	Barbell	Triceps	3	8
+Standing Barbell Bicep Curls	Barbell	Biceps	3	8
+Kettlebell Swings	Kettlebell	Core / Body	3	8
+Kneeling Cable Crunches	Cable	Abs / Core	3	8
+
+add at least 5 lbs each week to each one of your exercises.				
+				
+What if I add weight and fail?				
+If you fail a rep/set/whatever, you repeat that weight during the next workout. If you fail the next workout, you lower your weight by 10% and continue to use that until progress. Reset weights get rounded down.				
+				
+What about rest between sets?				
+Break times between sets are 3-5 minutes for the 5x5 sets and 1-2 minutes for the 3x8 sets.				
+				
+What if I stall?				
+If you are not progressing and stall for a while, you may need to deload. Read this.				
+
+
+<h3>Bodyweight Fitness</h3>
+
+<h2>Strength Standards (according to total weight - lbs)</h2>
+<!-- kg later -->
+Weight: weightlbs
+Note: All lifts are done with free weights, good form, no supportive gear other than a belt, and drug free.
+They are all for a one-rep max unless otherwise noted, and the weight of the bar is included in all of the exercises when applicable.
+
+
+Men
+You
+
+
+Ratios
+Standards 
+
+<div id="Strength Standards">
+    <input type="button" id="create" value="Click here" onclick="Javascript:strengthStandards()">
+</div>
+
+9 x 13
+<table>
+<tr>
+<th>Exercise </th><th> Your lift </th><th> Grade </th><th> Decent </th><th> Good </th><th> Great </th><th> Decent*X </th><th> Good*X </th><th> Great*X </th></tr>
+<tr><th>Squat (lbs) <th></th><th></th><th></th><th></th><th></th></th><th>1.5</th><th> 2 </th><th>2.5</th></tr>
+<tr><th>Bench Press (lbs) <th></th><th></th><th></th><th></th><th></th></th><th> 1.25 </th><th>1.5</th><th> 2</th></tr>
+<tr><th>Deadlift (lbs) <th></th><th></th><th></th><th></th><th></th></th><th>1.5</th><th> 2 </th><th>2.75</th></tr>
+<tr><th>Standing Military Press (lbs) <th></th><th></th><th></th><th></th><th></th></th><th>0.5 </th><th>0.8 </th><th>1</th></tr>
+<tr><th>Leg Press (lbs) <th></th><th></th><th></th><th></th><th></th></th><th>1.95 </th><th>3.4 </th><th>4.75</th></tr>
+<tr><th>45 1/4 Bent Over Row (lbs)<th></th><th></th><th></th><th></th><th></th></th><th> 1 </th><th>1.3</th><th> 1.5</th></tr>
+<tr><th>EZ Bicep Curl (lbs) <th></th><th></th><th></th><th></th><th></th></th><th>0.4 </th><th>0.65 </th><th>0.85 </th></tr>
+<tr><th>Skull Crusher (lbs) <th></th><th></th><th></th><th></th><th></th></th><th>0.35 </th><th>0.55 </th><th>0.7</th></tr>
+<tr><th>Push-ups (Quantity)<th></th><th></th><th></th><th></th><th></th></th><th> 30 </th><th>60 </th><th>90</th></tr>
+<tr><th>Dips (Quantity) <th></th><th></th><th></th><th></th><th></th></th><th> 20 </th><th>40 </th><th>60 </th></tr>
+<tr><th>Pull-ups (Quantity)<th></th><th></th><th></th><th></th><th></th></th><th> 10</th><th> 20 </th><th>30</th></tr>
+<tr><th>Elbow Plank (time)<th></th><th></th><th></th><th></th><th></th></th><th> 1:30</th><th> 3:00 </th><th>5:00</th></tr>
+</table>
+
+<p><label for="squat"> Squat: </label>
+<input type="number" name="squat" size="6"/></p>
+<p><label for="bench_press"> Bench Press: </label>
+<input type="number" name="bench_press" size="6"/></p>
+<p><label for="deadlift"> Deadlift: </label>
+<input type="number" name="deadlift" size="6"/></p>
+<p><label for="standing_military_press"> Standing Military Press: </label>
+<input type="number" name="standing_military_press" size="6"/></p>
+<p><label for="leg_press"> Leg Press: </label>
+<input type="number" name="leg_press" size="6"/></p>
+<p><label for="bent_over_row"> Bent Over Row: </label>
+<input type="number" name="bent_over_row" size="6"/></p>
+<p><label for="ez_bicep_curl"> Ez Bicep Curl: </label>
+<input type="number" name="ez_bicep_curl" size="6"/></p>
+<p><label for="skull_crusher"> Skull Crusher: </label>
+<input type="number" name="skull_crusher" size="6"/></p>
+<p><label for="push_ups"> Push Ups: </label>
+<input type="number" name="push_ups" size="6"/></p>
+<p><label for="dips"> Dips: </label>
+<input type="number" name="dips" size="6"/></p>
+<p><label for="pull_ups"> Pull Ups: </label>
+<input type="number" name="pull_ups" size="6"/></p>
+<p><label for="elbow_plank"> Elbow Plank: </label>
+<input type="number" name="elbow_plank" size="6"/></p>
+
+
+Women
+You
+
+Ratios
+Standards 
+Exercise, Your lift, Grade, decentlbs goodlbs  greatlbs , decentratio, goodratio, greatratio
+Squat (lbs) 0.75 1.25 2
+Bench Press (lbs) 0.5 0.75 1
+Deadlift (lbs) 1 1.5 2
+Standing Military Press (lbs) 0.2 0.3 0.45
+Leg Press (lbs) 0.85 1.7 2.1
+45 1/4 Bent Over Row (lbs) 0.3 0.5 0.65
+EZ Bicep Curl (lbs) 0.2 0.35 0.4
+Skull Crusher (lbs) 0.15 0.2 0.25
+Push-ups (Quantity) 5 25 50
+Dips (Quantity) 1 15 30
+Pull-ups (Quantity) 1 5 6
+
+Both
+
+
+<h2>Ideal Weight</h2>
+<p>Robinson Formula:</p><div id=robinson></div>
+<p>Miller Formula: </p><div id=miller></div>
+<p>Hamwi Formula: </p><div id=hamwi></div>
+<p>Devine Formula: </p><div id=devine></div>
+<p>YMCA Formula: </p><div id=ymca></div>
+<p>Modified YMCA Formula: </p><div id=mod_ymca></div>
+<p>BMI Low Weight: </p><div id=bmiweightlbslow></div>
+<p>BMI High Weight: </p><div id=bmiweightlbshigh></div>
+<p>BMI Average Weight: </p><div id=bmiweightlbsavg></div>
+
+
+<h2>Lyle MacDonald's Rapid Fat Loss Diet</h2>
+<p>Category: </p><div id=rflcategory></div>
+
+
+<h2>Maximum Muscular Bodyweight and Measurements Calculator</h2>
+
+Casey Butt
+
+The following calculator gives you an estimate of the maximum muscular bodyweight and muscular measurements (at roughly 8 to 10% bodyfat) that a drug-free trainee of your structure is likely to attain. It is based on equations I've developed through over 6 years of research and analysis of data from drug-free champions both past and present. In essence, this calculator scales the weights and measurements of the drug-free champions to your skeletal structure. 
+
+Height:	<div id=height></div> in	
+Wrist:	<div id=wrist></div> in
+Ankle:	<div id=ankle></div> in 
+
+<!-- FIX -->
+Bodyfat that you want:  <div id=desiredbf></div>%
+
+Your estimated maximum muscular bodyweight at ~8% bodyfat is: <div id=weight_max_8></div> lbs
+
+Your estimated maximum bulked bodyweight at ~8% bodyfat is: <div id=bulkweight_8></div> lbs
+
+Your estimated maximum muscular bodyweight at ~10% bodyfat is: <div id=weight_max_10></div> lbs
+
+Your estimated maximum bulked bodyweight at ~10% bodyfat is: <div id=bulkweight_10></div> lbs
+
+Your estimated maximum muscular bodyweight at ~___% bodyfat is: <div id=weight_max></div> lbs
+
+Your estimated maximum bulked bodyweight at ~___% bodyfat is: <div id=bulkweight></div> lbs
+
+Your estimated maximum muscular measurements (@ ~8%-10% bodyfat) are:
+
+Chest: <div id=chest_max></div> in
+Biceps: <div id=biceps_max></div> in
+Forearms: <div id=forearms_max></div> in
+Neck: <div id=neck_max></div> in
+Thighs: <div id=thigh_max></div> in
+Calves: <div id=calves_max></div> in
+
+</ul>
+
+</form>
+
+<h2>References</h2>
+Ketogains.com
+darthluiggi	
+Katch McCardle BMR Formula
+Jackson, A. S., & Pollock, M. L. (1978). Generalized equations for predicting body density of men.British Journal of Nutrition, 40, 497-504. 
+Jackson, A. S., Pollock, M. L., & Ward, A. (1980). Generalized equations for predicting body density of women. Medicine and Science in Sports and Exercise, 6, 175-182.
+http://www.weightrainer.net/bodypred.html
+Casey Butt
+http://www.weightrainer.net/potential.html
+</body>
+</html>
